@@ -59,7 +59,7 @@
   ```
 
   이제 다른 개발자가 위의 클래스를 이용한다고 하자.
-  - 생성자를 이용한다면, 어떤 role이 부여됐는지 코드를 보기 전까진 알 수가 없다.
+  - 생성자를 이용한다면, 어떤 role이 부여되는지 코드를 보기 전까진 알 수가 없다.
   - 정적 팩터리 메서드는, 메서드 명으로 어떤 role이 부여되는지 설명 되어있다.
 
 
@@ -154,7 +154,7 @@
   
   생성자는 해당 클래스의 인스턴스만 만들 수 있다. 하지만 정적 팩토리 메소드를 사용하면 같은 메소드라도 상황에 따라 다른 클래스 인스턴스를 반환할 수 있다. 적은 메모리를 사용해야하는 경우와 그 반대의 경우에 따라 다른 클래스 인스턴스를 반환함으로써 자원을 효율적으로 사용할 수 있다.
 
-  다음은 특정 Enum 클래스를 다루는 빈 Set을 만들어주는 `EnumSet의` `noneOf` 메서드이다. `EnumSet` 클래스는 public 생성자 없이 정적 팩터리 메서드만 제공하는데, 원소의 수에 따라 64개 이하라면 `RegularEnumSet`, 초과라면 `JumboEnumSet`의 인스턴스를 반환한다.
+  다음은 특정 Enum 클래스에 대한 비어있는 Set을 만들어주는 `EnumSet`의 `noneOf` 메서드이다. `EnumSet` 클래스는 public 생성자 없이 정적 팩터리 메서드만 제공하는데, 원소의 수에 따라 64개 이하라면 `RegularEnumSet`, 초과라면 `JumboEnumSet`의 인스턴스를 반환한다.
 
   ```JAVA
   // EnumSet의 정적 팩토리 메소드는 경우에 따라 RegularEnumSet, JumboEnumSet 두개의 클래스의 인스턴스를 반환한다.
@@ -254,17 +254,41 @@
   2) 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
   </p>
 
-  API 설명에 드러나는 생성자와는 달리, 정적 팩터리 메서드는 사용자가 이 메서드의 존재를 인지하고 있어야만 사용할 수 있다.
+  생성 방법이 `new 클래스(인자);`로 모두 같아 찾기 쉬운 public 생성자와는 달리, 정적 팩터리 메서드는 사용자가 이 메서드의 존재를 인지하고 있어야만 사용할 수 있다.
 
-  이 문제를 완화하려면 API 문서를 잘 정리해놓는다거나, 널리 쓰이는 메서드 명명 규칙을 사용해야 한다.
+  이 문제를 완화하려면 API 문서를 잘 정리해놓는다거나, 널리 쓰이는 **메서드 명명 규칙을 사용해야 한다**.
 
 ## 정적 팩터리 메서드 명명 규칙
 
-* from
-* of
-* valueOf
-* instance
-* create
-* get\<Type>
-* new\<Type>
-* \<Type>
+* **from** <br>
+  매개 변수를 하나 받아 해당 타입 인스턴스를 반환 <br>
+  `Date d = Date.from(instant);`
+
+* **of** <br>
+  여러 매개 변수를 받아 적합한 타입 인스턴스 반환 <br>
+  `Set<Rank> faceCards = EnumSet.of(JACK, QUEEN, KING);`
+
+* **valueOf** <br>
+  from과 of 의 더 자세한 버전<br>
+  `BigInteger prime = BigInteger.valueOf(Integer.MAX_VALUE)`
+
+* **instance** / **getInstance** <br>
+  인스턴스를 반환, 같은 인스턴스임을 보장하지는 않음<br>
+  `StackWalker luke = StackWalker.getInstance(options);`
+
+* **create** / **newInstance** <br>
+  인스턴스를 반환, 다른 인스턴스임을 보장<br>
+  `Object newArray = Array.newInstance(classObject, arrayLen);`
+
+* **get[타입]** <br>
+  다른 타입의 인스턴스를 반환, 같은 인스턴스임을 보장하지는 않음<br>
+  `FileStore fs = Files.getFileStore(path)`
+
+* **new[타입]** <br>
+  다른 타입의 인스턴스를 반환, 다른 인스턴스임을 보장<br>
+  `BufferedReader br = Files.newBufferedReader(path)`
+
+* **[타입]** <br>
+  get타입 과 net타입의 간결한 버전<br>
+  `List<Complaint> litany = Collections.list(legacyLitany)`
+
