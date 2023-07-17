@@ -685,7 +685,7 @@
         void editContentTest() {
             // given
             BoardEdit boardEdit = BoardEdit.builder()
-                .title(EDITED_CONTENT)
+                .title(EDITED_TITLE)
                 .content(null)
                 .build();
 
