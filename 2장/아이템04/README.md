@@ -19,7 +19,7 @@
     public class UtilityClass {
 
         // 인스턴스화 방지를 위해 기본 생성자가 만들어지는 것을 막는다.
-        private UtilityClass {
+        private UtilityClass() {
             throw new AssertionError(); 
         }
 
@@ -108,7 +108,7 @@
     ```java
     public class CommonUtils {
 
-        private CommonUtils {
+        private CommonUtils() {
             throw new AssertionError();
         }
 
