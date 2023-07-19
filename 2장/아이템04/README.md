@@ -24,7 +24,7 @@
         }
 
         // 정적 필드 예시
-        public static String SERVER_IP = "localhost";
+        public static final String SERVER_IP = "localhost";
 
         // 정적 메소드 예시
         public static LocalDateTime getNow() {
@@ -58,6 +58,7 @@
     > - 인터페이스에 변수를 작성하면 상수 값이므로 다음과 같은 변수명 명명규칙을 따른다.
     >   - 변수명은 영어 대문자로 작성한다.
     >   - 의미를 구분 지을 때는 언더바로 구분한다.
+    > - 그러나 인터페이스로 상수를 활용하고자 하면 인터페이스를 구현하는 구현체를 방지할 방법이 없다는 것에 주의!
 <br>
 
 <br>
