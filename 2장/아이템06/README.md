@@ -40,9 +40,7 @@
     >
     > - RomanNumerals 클래스가 로딩될 때 static 변수인 ROMAN에 값을 할당 후, isRomanNumeral 메소드가 호출될 때마다 ROMAN 변수를 새로 생성하지 않고 가져다가 사용하는 것이다.
 
-    <br>
 
-    [어댑터 패턴에 대한 설명](https://johngrib.github.io/wiki/pattern/adapter/)
 
 <br>
 
@@ -63,9 +61,7 @@
 		System.out.println(set1 == set2);
 	}
     ```
-    > 📌 **위의 코드가 동작하는 방식은?**
-    >
-    > - RomanNumerals 클래스가 로딩될 때 static 변수인 ROMAN에 값을 할당 후, isRomanNumeral 메소드가 호출될 때마다 ROMAN 변수를 새로 생성하지 않고 가져다가 사용하는 것이다.,
+    [어댑터 패턴에 대한 설명](https://johngrib.github.io/wiki/pattern/adapter/)
 
 <br>
 
@@ -82,31 +78,24 @@
 		}
 		return sum;
 	}
+    ```
+    > 📌 **JPA 엔티티의 컬럼 필드는 무조건 Wrapper Class로 선언해야 할까?**
+    >
+    > - 반드시 그럴 필요는 없다!
+    > - 다만 null 값으로 엔티티 간 연관관계를 나타낼 수 있는 부분이 필요하다면 Wrapper Class를 써야 한다.
+    > - 또는 null로 엔티티의 상태를 나타낼 수 있다면 Wrapper Class를 써야 한다.
+
+[엔티티 필드에 반드시 Wrapper Class를 사용해야 할까?](https://velog.io/@d-h-k/JPA-Entity-Class-%EC%97%90%EC%84%9C-Primitive-Type-%EC%9D%84-%EC%8D%A8%EC%95%BC%ED%95%A0%EA%B9%8C-Wrapper-Class-%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%95%BC%ED%95%A0%EA%B9%8C)
+
+[엔티티의 PK에 반드시 Wrapper Class를 사용해야 할까?](https://stackoverflow.com/questions/9146967/should-i-use-primitives-or-wrappers-in-jpa2-0)
 
 <br>
 
 - 그렇다고 객체 생성은 비싸니까 무조건 객체 풀을 만들어야 하는 것은 아니다!
 <br>
-
-<br>
 <hr>
 
 ## 추가 학습
-### 정규식
-
-- 정규식이란 프로그래밍에서 문자열을 다룰 때, 문자열의 일정한 패턴을 표현하는 일종의 형식 언어를 말한다.
-- 그러나 정규식은 "백트래킹" 방식을 사용하므로 성능이 조금 느린 부분이 있다.
-
-[정규식을 웹에서 사용하기](https://regexr.com/)
-
-<br>
-
-### Pattern 클래스
-
-- Pattern 클래스는 정규 표현식이 컴파일된 클래스. 정규 표현식에 대상 문자열을 검증하거나, 활용하기 위해 사용되는 클래스이다. 
-
-<br>
-
 ### String Constant Pool
 
 - String Constant Pool은 리터럴 문자를 저장하는 영역이다. 메모리의 어느 지점에 저장되는 지는 JVM 벤더의 구현체마다 다를 수 있다.
@@ -119,6 +108,21 @@
     ```
 
 [String Constant Pool 알아보기](https://stackoverflow.com/questions/4918399/where-does-javas-string-constant-pool-live-the-heap-or-the-stack)
+
+<br>
+
+### 정규식
+
+- 정규식이란 프로그래밍에서 문자열을 다룰 때, 문자열의 일정한 패턴을 표현하는 일종의 형식 언어를 말한다.
+- 그러나 정규식은 "백트래킹" 방식을 사용하므로 성능이 조금 느린 부분이 있다.
+
+[정규식을 웹에서 사용하기](https://regexr.com/)
+
+<br>
+
+### Pattern 클래스
+
+- Pattern 클래스는 정규 표현식이 컴파일된 클래스. 정규 표현식에 대상 문자열을 검증하거나, 활용하기 위해 사용되는 클래스이다. 
 
 <br>
 
@@ -139,8 +143,10 @@
 
 
 - AntPathMatcher
+    - PatternMatchUtils와 다르게 AntPathMatcher "경로 문자열"에 대한 매칭여부를 판단한다.
     - AntPathMatcher는 경로에 와일드 카드를 주고, 패턴에 매칭하는지 판단할 문자열로 패턴 매치 여부를 체크한다.
-    - PatternMatchUtils과 다르게 패턴을 배열이 아닌 1개만 전달하도록 되어있다.
+
+    - PatternMatchUtils와 다르게 패턴을 배열이 아닌 1개만 전달하도록 되어있다.
 
     ```java
     AntPathMatcher matcher = new AntPathMatcher();
@@ -149,3 +155,15 @@
 
     System.out.println(isMatched); // true 반환
     ```
+    > 📌 **PatternMatchUtils는 정적 메소드를 사용하는데 AntPathMatcher는 인스턴스를 생성하는 이유?**
+    >
+    > - PatternMatchUtils는 클래스에 상태값을 가지지 않는다.
+    >   - 그러므로 simpleMatch 정적 메소드를 선언하여 메모리를 절약할 수 있다.
+    >   - AntPathMatcher와 다르게 pathSeparator를 가지지 않으므로 경로 문자열 이외의 경우에도 사용 가능하다.
+
+    > - 반면 AntPathMatcher는 클래스는 경로 문자열에 대한 match 여부를 확인한다.
+    >   - 그러므로 반드시 pathSeparator를 가져야 하고, AntPathMatcher의 인스턴스마다 pathSeparator는 각기 다른 값을 가질 수 있다.
+    >   - pathSeparator는 기본값을 가지거나 생성자 파라미터 or 수정자로 입력해 주어야 한다.
+    
+
+
