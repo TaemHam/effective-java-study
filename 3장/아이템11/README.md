@@ -94,7 +94,9 @@
 
 <br>
 
-### 그렇다면 HashMap은 hashcode를 어떻게 활용하는 것일까?
+# 추가 학습
+
+## HashMap은 hashcode를 어떻게 활용하는 것일까?
 - HashMap에서는 내부적으로 구현된 해시함수와 key의 hashCode 메소드를 가지고 key의 해시값을 계산한다.
   
 - 모든 값에 대해 해시값을 다르게 부여하는 것은 불가능하므로 HashMap에서는 다음과 같은 방법을 사용한다.
@@ -108,6 +110,8 @@
     [자바 17에서 HashMap은 어떻게 동작하는가?](https://howtodoinjava.com/java/collections/hashmap/how-hashmap-works-in-java/)
 
     [자바 17에서 HashMap의 내부구조](https://howtodoinjava.com/java/collections/hashmap/how-hashmap-works-in-java/)
+
+    [해시에 대한 이해를 돕기위한 동영상 (6:36 ~ 16:50만 보세요.)](https://www.youtube.com/watch?v=S7vni1hdsZE)
 
     ```java
     public static void main(String[] args) {
