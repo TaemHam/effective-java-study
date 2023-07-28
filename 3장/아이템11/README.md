@@ -97,7 +97,7 @@
 
     <br>
 
-  - 그러므로 @EqualsAndHashCode를 사용할 때는 다음과 같이 파생 컬럼을 exclude해서 사용하자.
+- 그러므로 @EqualsAndHashCode를 사용할 때는 다음과 같이 파생 컬럼을 exclude해서 사용하자.
   
     ```java
     @Data
