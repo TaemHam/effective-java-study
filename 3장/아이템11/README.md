@@ -95,6 +95,21 @@
     >   - 파생 필드까지 포함하여 hashCode를 계산하므로 비효율 적이다.
     >   - 논리적으로 동일한 객체로 판단하는 기준에 파생 필드가 포함되지 않는 경우, 논리적으로 같은 객체임에도 hashCode가 다르게 계산될 수 있다.
 
+    <br>
+
+  - 그러므로 @EqualsAndHashCode를 사용할 때는 다음과 같이 파생 컬럼을 exclude해서 사용하자.
+  
+    ```java
+    @Data
+    @EqualsAndHashCode(exclude = {"zipCode", "city"})
+    public class CreateOrder {
+
+        private String zipCode;
+        private String city;
+        private String street;
+        private Payment payment;
+    }
+    ```
 
 <br>
 
