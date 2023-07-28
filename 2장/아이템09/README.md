@@ -97,3 +97,77 @@ public class TryWithResource {
 ```
 
 이를 사용하기 위한 조건은 단 한가지, **사용하는 자원이 AutoClosable 인터페이스를 상속해 `.close()` 메서드를 구현해 놓았다면 가능**하다.
+
+# 추가 학습
+
+## try-with-resources를 사용할 때 예외 발생 시 어떻게 처리되는가?
+
+- try의 () 문 안에서 예외가 발생한 경우
+  - 메모리에 할당되지 않고 null이 되어버리므로 close를 호출할 필요가 없으니 AutoCloseable의 close 메소드도 호출되지 않는다.
+  
+- try의 () 문 안에서 여러 개의 인스턴스를 생성하려고 하는데, 특정 클래스에서 생성 시점에 예외가 발생 시 이미 생성된 인스턴스에 대해서는 close가 호출되어 자원 해제를 한다.
+
+    ```JAVA
+    class AutoCloseableCloseTest {
+
+        @Test
+        void closeTest1() throws Exception{
+            try (
+                // 애초에 mySocket 변수에 인스턴스가 할당되지 않으므로
+                // AutoClosable의 close 메소드를 호출할 필요가 없다.
+                MySocket mySocket = new MySocket("");
+                ){
+
+            }
+        }
+
+        @Test
+        void closeTest2() throws Exception{
+            try (
+                // mySocket1이 할당 된 후, mySocket2를 생성할 때 예외가 발생하였다.
+                // 이 경우 mySocket1의 close 메소드는 호출이 되며,
+                // mySocket2의 close 메소드는 호출이 되지 않는다.
+                MySocket mySocket1 = new MySocket("1번 소켓");
+                MySocket mySocket2 = new MySocket("");
+                MySocket mySocket3 = new MySocket("3번 소켓");
+                ){
+
+            }
+        }
+
+        @Test
+        void closeTest3() throws Exception{
+            try (
+                // 정상적으로 자원 할당 후 try 블록 안에서 예외 발생 시
+                // close 메소드가 호출된다.
+                MySocket mySocket = new MySocket("소켓");
+                ){
+                    // myMethod 호출 시 예외가 발생한다.
+                    mySocket.myMethod();
+            }
+        }
+
+        static class MySocket implements AutoCloseable{
+            private final String param;
+
+            public MySocket(String param) {
+                if(param.equals("")) {
+                System.out.println("예외 호출");
+                    throw new IllegalArgumentException();
+                }
+                this.param = param;
+            }
+
+            public void myMethod() {
+                throw new IllegalArgumentException();
+            }
+
+            @Override
+            public void close() throws Exception {
+                System.out.println("close 호출");
+                System.out.println("param = " + param);
+
+            }
+        }
+    }
+    ```
