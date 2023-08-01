@@ -98,6 +98,16 @@ public class TryWithResource {
 
 이를 사용하기 위한 조건은 단 한가지, **사용하는 자원이 AutoClosable 인터페이스를 상속해 `.close()` 메서드를 구현해 놓았다면 가능**하다.
 
+try-with-resources를 사용하면 다음과 같은 장점을 지니게 된다.
+
+1. 예외가 사라지지 않고 숨겨진다.
+
+    앞의 상황처럼 `.readLine()`과 `.close()` 둘 모두에서 예외가 발생한다면, close에서 발생한 예외는 숨겨지고 readLine 에서 발생한 예외가 출력된다. 숨겨진 예외는 없어지는 것이 아닌, 'suppressed' 상태로 존재하게 되는데, 이는 `.getSuppressed()` 메서드를 통해 접근할 수 있게 된다.
+
+2. 가독성이 좋아진다.
+
+    finally 절이 사라진다는 점, 그리고 여러 자원이 하나의 inline 레벨에서 관리된다는 점에서 가독성이 더욱 뛰어나졌다. 특히 예외 처리로 catch 문을 사용할 때, 각 자원들마다 발생할 수 있는 예외가 다를 수 있어, catch 문의 inline 레벨도 각각 달라야 했는데, try-with-resources 에서는 모두 같은 레벨에서 처리가 가능하다.
+
 # 추가 학습
 
 ## try-with-resources를 사용할 때 예외 발생 시 어떻게 처리되는가?
