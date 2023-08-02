@@ -727,3 +727,98 @@
         }
     }
     ```
+
+### 생성자에 빌더 사용 시 주의점
+
+- 클래스의 생성자에 빌더를 사용하여 많은 필드 중 생성자에서 파라미터로 받을 필드만 빌더의 대상으로 제한할 수 있다.
+  
+    <br>
+
+    ```java
+    public class MyClass {
+
+        private String name;
+        private String nickname;
+        private int age;
+
+        @Builder
+        // 생성자를 private로 제한하여 직접적인 호출은 막고
+        // 빌더를 사용하여 간접적으로 접근할 수 있게 한다.
+        private MyClass(String name, String nickname, int age) {
+            this.name = name;
+            this.nickname = nickname;
+            this.age = age;
+        }
+    }
+
+    ```
+
+#### `그런데 여러 개의 생성자에 @builder를 붙일 때가 있다!`
+
+- 여러 개의 생성자를 구분할 때는 builderMethodName 파라미터를 넣어 빌더 간 구분한다.
+
+    ```java
+    public class MyClass {
+
+        private String name;
+        private String nickname;
+        private int age;
+
+        @Builder
+        // 편의 상 1번 생성자로 부르겠음
+        private MyClass(String name, String nickname, int age) {
+            this.name = name;
+            this.nickname = nickname;
+            this.age = age;
+        }
+
+        @Builder(builderMethodName = "nameBuilder")
+        // 편의 상 2번 생성자로 부르겠음
+        private MyClass(String name) {
+            this.name = name;
+        }
+    }
+
+    ```
+    > 📌 **buildMethodName을 구분하지 않으면 심각한 오류가 발생한다!**
+    > 
+    > - @Builder 어노테이션의 buildMethodName의 기본값은 "build" 이다.
+    > - 빌더의 경우 "build" 메소드가 호출될 때 MyClass의 인스턴스가 생성된다.
+    > - 만약 위의 경우처럼 여러 개의 @Builder가 있는 경우 결국 "build" 메소드가 2개가 선언되며
+    > - nameBuilder를 호출하더라도 결국 1번 생성자가 호출된다.
+    >    - 작성순서 상 위에 작성된 생성자 메소드가 호출된다!
+
+    <br>
+
+    ```java
+        // nameBuilder를 사용하여 2번 생성자가 호출되길 기대했지만
+        // 1번 생성자가 호출된다.
+        MyClass.nameBuilder()
+            .name("admin")
+            .build();
+    ```
+
+- 그러므로 여러 개의 생성자에 @Builder를 적용할 때는 반드시 builderMethodName과 buildMethodName로 확실하게 구분해 주어야 원하지 않는 생성자의 호출을 방지할 수 있다.
+
+    ```java
+    public class MyClass {
+
+        private String name;
+        private String nickname;
+        private int age;
+
+        @Builder
+        private MyClass(String name, String nickname, int age) {
+            this.name = name;
+            this.nickname = nickname;
+            this.age = age;
+        }
+
+        // builderMethodName과 buildMethodName로 확실하게 구분해줌!
+        @Builder(builderMethodName = "nameBuilder", buildMethodName = "buildByName")
+        private MyClass(String name) {
+            this.name = name;
+        }
+    }
+
+    ```
