@@ -305,6 +305,7 @@ public class ColorPoint extends Point {  // 자식 클래스
 
 ### 모든 객체가 null과 같지 않도록 equals를 재정의하라.
 - 이는 equals의 판단에 사용되는 모든 필드나 객체가 null이 아닌 경우에 동일하다고 판단해야 한다는 것이다.
+- 간단하게 말하면 equals로 비교할 때 `o != null` 임을 체크해줘야 한다는 것이다.
 - 또 equals를 판단할 때 클래스의 타입이 같은지도 체크해야 한다.
  
     ```java
