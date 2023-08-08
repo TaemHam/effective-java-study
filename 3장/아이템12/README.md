@@ -36,7 +36,7 @@
 
 - 포맷을 명시하기로 했다면, 명시한 포맷에 맞는 문자열과 객체를 상호 전환할 수 있는 정적 팩터리나 생성자를 함께 제공해주면 좋다.
  
-  - 자바의 많은 값 클래스가 따르는 방식이며 예를들어 BinInteger나 BigDecimal 클래스가 있다.
+  - 자바의 많은 값 클래스가 따르는 방식이며 예를들어 BigInteger나 BigDecimal 클래스가 있다.
 
     ```java
     public class BigInteger extends Number implements Comparable<BigInteger> {
