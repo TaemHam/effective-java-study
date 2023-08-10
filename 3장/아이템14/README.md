@@ -1,4 +1,4 @@
-# 아이템 14. comaparable을 구현할지 고려하라.
+# 아이템 14. comparable을 구현할지 고려하라.
 
 ### Comparable 인터페이스는 객체 간 비교하는 방법을 제공한다.
 - Comparable 인터페이스의 compareTo 메소드는 단순 동치성 비교에 더해 순서까지 비교할 수 있다.
@@ -26,7 +26,6 @@
   
   > - 그러나 Comparable을 구현하는 일반 규약이 있으니 되도록이면 규약을 따르도록 하자.
 
-
 <br>
 
 ### 자바의 대부분의 클래스와 열거타입은 이미 Comparable을 구현해 놓았다.
@@ -44,17 +43,18 @@
   // int 배열 정순 정렬
   Arrays.sort(arr);
 
-  // int 배열 역순 정렬 (boxing이 되어야 API로 처리 가능)
-  Collections.reverse(Arrays.asList(arr));
-  ```
-  ```java
-  int[] arr = {1, 2, 3, 4, 5};
+  // int 배열 역순 정렬 (boxing이 되어야 API로 처리 가능, 이후 int[] 배열로 다시 변환해줘야 함)
+  List<Integer> list = Arrays.asList(arr);
 
-  // int 배열 정순 정렬
-  Arrays.sort(arr);
+  Collections.reverse(list);
 
-  // int 배열 역순 정렬 (boxing이 되어야 API로 처리 가능)
-  Collections.reverse(Arrays.asList(arr));
+  // int 배열 역순 정렬 (stream 이용)
+  Arrays.stream(list)
+			.boxed()
+			.sorted(Comparator.reverseOrder())
+			.mapToInt(Integer::intValue)
+			.toArray();
+
 
   // 우선순위 큐로 최대 힙 구현
   PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
@@ -72,9 +72,9 @@
 - 이 객체와 주어진 객체의 순서를 비교한다. 이 객체가 주어진 객체보다 작으면 음의 정수를, 같으면 0을, 크면 양의 정수를 반환한다. 이 객체와 비교할 수 없는 타입의 객체가 주어지면 ClassCastException을 던진다.
   - `순서를 바꾸어 비교해도 같은 결과가 나와야 한다.`
  
-- Comparable을 구현한 클래스는 추이성을 보장해야 한다. 즉, (x.compareTo(y) > 0 && y.compareTo(z) > 0) 이면 x.compare(z) > 0 이다.
+- Comparable을 구현한 클래스는 추이성을 보장해야 한다. 즉, (x.compareTo(y) > 0 && y.compareTo(z) > 0) 이면 x.compareTo(z) > 0 이다.
 
-- Comparable을 구현한 클래스는 모든 z에 대해 x.compareTo(y) == 0 이면 sign(x.compareTo(z)) == sign(y.compareTo(z)) 입니다.
+- Comparable을 구현한 클래스는 모든 z에 대해 x.compareTo(y) == 0 이면 sgn(x.compareTo(z)) == sgn(y.compareTo(z)) 입니다.
   - `즉 x == y라면, x.compareTo(anyObject)의 결과와 y.compareTo(anyObject)의 결과가 같아야 한다는 뜻이다.`
 
 - 이번 권고는 필수는 아니지만 꼭 지키는 것이 좋다. (x.compareTo(y) == 0) == (x.equals(y))여야 한다.
@@ -93,9 +93,9 @@
 <br>
 
 - 위의 규약은 equals의 규약과 매우 비슷하다.
-- 상속을 받은 부모, 자식 클래스 관계 시 euqals 규약을 지키기 어려웠던 것처럼 compareTo도 똑같다.
+- 상속을 받은 부모, 자식 클래스 관계 시 equals 규약을 지키기 어려웠던 것처럼 compareTo도 똑같다.
 
-  [toString의 규약 확인하기](https://github.com/TaemHam/effective-java-study/tree/main/3%EC%9E%A5/%EC%95%84%EC%9D%B4%ED%85%9C10)
+  [equals의 규약 확인하기](https://github.com/TaemHam/effective-java-study/tree/main/3%EC%9E%A5/%EC%95%84%EC%9D%B4%ED%85%9C10)
 
 <br>
 
@@ -110,7 +110,7 @@
 <br>
 
 #### 작성 요령 1. Comparable를 이용하여 순서를 비교한다.
-- comapareTo는 객체의 동치성이 아닌 `순서`를 비교하는 것이기 때문에 객체의 참조 필드를 비교하려면 참조 필드의 내부도 compareTo로 계속 확인해야 한다. (compareTo 메서드를 사용해서 재귀적으로 비교한다는 것이다.)
+- compareTo는 객체의 동치성이 아닌 `순서`를 비교하는 것이기 때문에 객체의 참조 필드를 비교하려면 참조 필드의 내부도 compareTo로 계속 확인해야 한다. (compareTo 메서드를 사용해서 재귀적으로 비교한다는 것이다.)
 
 - Comparable를 구현하지 않은 필드나 표준이 아닌 순서로 비교해야 한다면 (역순, 내가 원하는 정렬 순서 등) Comparator 인터페이스를 활용하여 새로 구현하거나, 자바가 제공하는 API를 쓰자.
 
@@ -122,6 +122,8 @@
 - 박싱 필드, String에도 compareTo가 있으므로 활용하자.
   ``` java
   public int compareTo(CaseInsensitiveString cis) {
+    // compareToIgnoreCase API도 사용가능
+    // return s.compareToIgnoreCase(cls.s);
     return String.CASE_INSENSITIVE_ORDER.compare(s, cis.s);
   }
   ```
