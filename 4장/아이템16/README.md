@@ -20,7 +20,7 @@
     public int y;
   }
 
-  // 옳은 않은 예
+  // 옳은 예
   class Point {
     private int x;
     private int y;
