@@ -62,8 +62,8 @@
     }
   }
 
-	public static void main(String[] args) {
-		StringSet set = new StringSet();
+  public static void main(String[] args) {
+    StringSet set = new StringSet();
 
     // 이 경우 다음과 같은 프로세스로 메소드가 호출된다.
     // 1. StringSet의 addAll 메소드가 호출되면서 addCount가 리스트의 사이즈만큼 증가
@@ -72,11 +72,11 @@
     // 3. 그런데 실제로 호출되는 add 메소드는 상위 클래스인 HashSet의 add 메소드가 아닌
     //    하위 클래스인 StringSet의 add 메소드가 호출된다.
     // 4. 따라서 addCount는 중복되어 증가하게 된다.
-		set.addAll(List.of("글자 1", "글자 2"));
+    set.addAll(List.of("글자 1", "글자 2"));
 
     // addCount는 2가 출력될거라 예상했지만 4가 출력된다!
-		System.out.println(set.getAddCount());
-	}
+    System.out.println(set.getAddCount());
+  }
 
   ```
 
@@ -114,14 +114,14 @@
     }
   }
 
-	public static void main(String[] args) {
-		StringSet set = new StringSet();
+  public static void main(String[] args) {
+    StringSet set = new StringSet();
 
-		set.addAll(List.of("글자 1", "글자 2"));
+    set.addAll(List.of("글자 1", "글자 2"));
 
     // addCount는 2가 출력된다.
-		System.out.println(set.getAddCount());
-	}
+    System.out.println(set.getAddCount());
+  }
 
   ```
 
