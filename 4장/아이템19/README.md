@@ -161,8 +161,7 @@ public class Sub extends Super {
   // 재정의 가능 메소드가 아닌 private를 호출하면 되므로
   // 오류를 막을 수 있다.
   private void add(int num1, int num2) {
-    add(num1, num2);
-  }
+    num1 + num2;
 }
 
 ```
