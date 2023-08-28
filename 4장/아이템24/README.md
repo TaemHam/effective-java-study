@@ -91,7 +91,7 @@ public class NestedNonStaticExample {
         return nonStaticClass.getNameWithOuter();
     }
 
-    // 비 정적 메서드 시작
+    // 비 정적 클래스 시작
     private class NonStaticClass {
         private final String nonStaticName;
 
@@ -100,7 +100,7 @@ public class NestedNonStaticExample {
         }
 
         public String getNameWithOuter() {
-        // 정규화된 this 를 이용해서 바깥 클래스의 인스턴스 메서드를 사용할 수 있다.
+            // 정규화된 this 를 이용해서 바깥 클래스의 인스턴스 메서드를 사용할 수 있다.
             return nonStaticName + NestedNonStaticExample.this.getName();
         }
     }
