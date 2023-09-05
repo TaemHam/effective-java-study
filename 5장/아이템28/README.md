@@ -77,7 +77,7 @@ public class Chooser {
     }
 
     public Object choose() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        Random random = ThreadLocalRandom.current();
         return choiceArray[random.nextInt(choiceArray.length)];
     }
 }
@@ -98,12 +98,39 @@ public class Chooser<T> {
     }
 
     public T choose() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        Random random = ThreadLocalRandom.current();
         return choiceArray[random.nextInt(choiceArray.length)];
     }
 }
 ```
 
-이렇게 바꾸면 동작할 것 같지만, Object[] 배열을 T[] 배열로 다운 캐스팅이 바로 안되니
+이렇게 바꾸면 동작할 것 같지만, Object[] 배열이 T[] 배열로 다운 캐스팅이 안되었으니 컴파일 오류를 뿜을 것이다.
 
 그럼 이 `Object[]` 배열을 `T[]` 배열로 형변환 하면 될까?
+
+`choiceArray = (T[]) choices.toArray();`
+
+이러면 컴파일은 가능하지만, unchecked 경고 메시지가 뜬다. T가 무슨 타입인지 알 수 없으니 컴파일러는 이 형변환이 런타임에도 안전한지 보장할 수 없기 때문이다.
+
+만약 이 형변환이 런타임에도 안전하다고 확신한다면, 주석을 남기고 @SuppressWarning을 달아 경고를 숨기는 방법도 있다.
+
+하지만 애초에 배열을 사용하지 않고 리스트를 사용하도록 바꾼다면, 형변환이 필요 없으니 경고도 뜨지 않게 된다.
+
+다음이 배열 대신 리스트를 사용한 최종 버전이다.
+
+```Java
+public class Chooser<T> {
+    private final List<T> choiceArray;
+
+    public Chooser(Collection<T> choices) {
+        choiceList = new ArrayList<>(choices);
+    }
+
+    public T choose() {
+        Random random = ThreadLocalRandom.current();
+        return choiceList.get(random.nextInt(choiceArray.size()));
+    }
+}
+```
+
+이 버전은 코드양이 조금 늘었고 조금 더 느릴 수 있지만, 런타임에 ClassCastException이 발생할 수 없으니 그 가치가 있다고 할 수 있다.
