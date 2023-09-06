@@ -67,7 +67,7 @@ public class Main {
 
 - 다음은 ArrayList의 toArray 메소드이다.
 
-- 교재에서는 메서드 안에 @SuppressWarning을 작성했지만 jav 17 버전에서는 메소드 바깥에 @SuppressWarning을 작성하였다.
+- 교재에서는 메서드 안에 @SuppressWarning을 작성했지만 java 17 버전에서는 메소드 바깥에 @SuppressWarning을 작성하였다.
 
 <br>
 
