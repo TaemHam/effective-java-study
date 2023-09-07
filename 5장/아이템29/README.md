@@ -43,8 +43,8 @@ public class Stack<E> {
     private E[] elements;
 
     public Stack() {
-    elements = (E[]) new Object[DEFAULT_INITIAL_CAPACITY];
-        }
+        elements = (E[]) new Object[DEFAULT_INITIAL_CAPACITY];
+    }
 
     public void push(E e) {
         ...
@@ -62,10 +62,21 @@ public class Stack<E> {
 ```
 <br>
 
-> **📌 배열을 사용하는 코드를 제네릭으로 만들 때 주의!**<br><br>
+> **📌 배열을 사용하는 코드를 제네릭으로 만들 때 주의!**<br>
 > - 제네릭 사용 시 E와 같은 실체화 불가 타입으로는 배열을 만들 수 없으며 2가지 방법을 사용할 수 있다.
 > 1. 제네릭 배열 생성을 금지하는 제약을 우회하는 방법이 있다.
 > 2. 배열을 사용하는 타입의 필드의 타입을 E가 아닌 Object로 변경하는 것이다.
+
+<br>
+
+> **📌 실체화 불가 타입이란?**<br>
+> - 비 구체화 타입(non-reifiable type) : 타입 소거자에 의해 컴파일 타임에 타입 정보가 사라지는 것(런타임에 구체화하지 않는 것)
+>   - 예를 들어 제네릭을 사용한 List<String>이 있다.
+> - 구체화 타입(reifiable type) : 자신의 타입 정보를 런타임 시에 알고 지키게 하는 것 (런타임에 구체화하는 것). 런타임 시에 완전하게 오브젝트 정보를 표현할 수 있는 타입
+    >   - 예를 들어 배열을 사용한 String[]가 있다.
+
+[실체화 불가 타입 (non-reifiable type)](https://applefarm.tistory.com/153)
+
 
 ### 배열을 제네릭으로 만드는 우회방법 1
 
@@ -99,6 +110,8 @@ public class Stack<E> {
 
 ```java
 public class Stack<E> {
+    private Object[] elements;
+
     public E pop() {
         if (size == 0) {
             throw new EmptyStackException();
@@ -124,9 +137,9 @@ public class Stack<E> {
 - `private E[] elements` 를 사용하여 E 타입만 받는 배열이라고 명시한다.
 
 ### 두번 째 방법의 장점
-- 첫번 째 방법과 달리 힙오염을 막을 수 있다. (힙 오염에 대한 자세한 내용은 아이템 32에서 다룬다.)
+- 첫번 째 방법과 달리 힙 오염을 막을 수 있다. (힙 오염에 대한 자세한 내용은 아이템 32에서 다룬다.)
 
-[힙 오염이란?](http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ001)
+[힙 오염이란?](http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#Topic2)
 
 <br>
 
