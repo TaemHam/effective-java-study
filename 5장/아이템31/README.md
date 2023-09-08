@@ -1,4 +1,4 @@
-# 아이템 31. 한정적 화일드카드를 사용해 API 유연성을 높이라
+# 아이템 31. 한정적 와일드카드를 사용해 API 유연성을 높이라
 
 > 📌 **매개변수화 타입은 `불공변(invariant)`이다.**<br>
   > - 즉 서로 다른 Type1, Type2가 있을 때 List\<Type1>과 List\<Type2>는 상속관계가 아니라는 뜻이다.
@@ -16,8 +16,6 @@
 <br>
 
 ## 불공변 방식보다 더 유연한 한정적 와일드카드 타입 사용하기
-
-<br>
 
 ### Stack API 간단하게 알아보기
 
@@ -44,13 +42,13 @@ public void pushAll(Iterable<E> src) {
 // Stack에서 Collection을 받아
 // 스택의 요소를 Collection에 담아준다.
 public void popAll(Collection<E> dst) {
-    while(!usEmpty()) {
+    while(!isEmpty()) {
         dst.add(pop());
     }
 }
 ```
 
-- 만약 Stack<Number> 로 선언한 후 pushAll(intVal) 을 호출하면 오류 메세지가 나타난다.
+- 만약 Stack\<Number> 로 선언한 후 pushAll(intVal) 을 호출하면 오류 메세지가 나타난다.
 
 - 우리는 Numebr의 하위 타입인 Integer를 제네릭으로 선언했을 때 Stack\<Integer>가 Stack\<Number>의 하위 타입일 것이라 기대한다.
 
@@ -62,7 +60,7 @@ public void popAll(Collection<E> dst) {
 
 - 위의 pushAll 메서드의 파라미터는 `E 또는 E의 하위타입의 Iterable`이어야 한다.
   
-- 위의 표현을 한정적 와일드카드로 표현하면 `Iterable\<? extends E>` 로 표현할 수 있다.
+- 위의 표현을 한정적 와일드카드로 표현하면 `Iterable<? extends E>` 로 표현할 수 있다.
 
 ```java
 public void pushAll(Iterable<? extends E> src) {
@@ -85,11 +83,11 @@ stack.popAll(objects);
 ```
 - 위의 popAll 메서드의 Collection 파라미터는 `E 또는 E의 상위타입을 타입으로 하는 Collection`이어야 한다.
 
-- 위의 표현을 한정적 와일드카드로 표현하면 `Collection\<? super E>` 로 표현할 수 있다.
+- 위의 표현을 한정적 와일드카드로 표현하면 `Collection<? super E>` 로 표현할 수 있다.
 
 ```java
 public void popAll(Collection<? super E> dst) {
-    while(!usEmpty()) {
+    while(!isEmpty()) {
         dst.add(pop());
     }
 }
@@ -101,7 +99,7 @@ public void popAll(Collection<? super E> dst) {
 
 - 유연성을 극대화하려면 원소의 생산자나 소비자용 입력 매개변수에 와일드카드 타입을 사용하자.
 
-  > 📌 **Pesc 공식**<br>
+  > 📌 **Pecs 공식**<br>
   > - producer-extends, consumer-super
   > - 즉 매개변수화 타입 T가 생산자라면 <? extends T>를 사용하자.
   > - 만약 매개변수화 타입 T가 소비자라면 <? super T>를 사용하자.
