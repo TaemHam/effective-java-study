@@ -143,7 +143,7 @@ class UnboundWildcardTypeInterfaceImpl implements UnboundWildcardTypeInterface {
 > |제네릭 타입|generic type|List\<E>|아이템 26, 29|
 > |정규 타입 매개변수|formal type parameter|E|아이템 26|
 > |비한정적 와일드카드 타입|unbounded wildcard type|List\<?>|아이템 26|
-> |로 타입|unbounded wildcard type|List\<?>|아이템 26|
+> |로 타입|unbounded wildcard type|List|아이템 26|
 > |한정적 타입 매개변수|bounded type parameter|\<E extends Number>|아이템 29|
 > |재귀적 타입 한정|recursive type bound|\<T extends Comparable\<T>>|아이템 30|
 > |한정적 와일드카드 타입|bounded wildcard type|List\<? extends Number>|아이템 31|
