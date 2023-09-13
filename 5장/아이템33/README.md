@@ -171,7 +171,7 @@ public Number getFavorite(String className) {
 <br>
 
 # 추가학습
-## Super Token Type
+## Super Type Token
 
 - 위의 token type 예제에서 List\<Integer> 등의 실체화 불가 타입은 Favorites에 key로써 넣을 수 없다고 했다. (타입 토큰으로 사용 불가능)
 
