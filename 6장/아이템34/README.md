@@ -76,8 +76,8 @@
     ```java
     enum Server {
         AUTH_SERVER("127.0.0.10"),
-        FRONT_SERVER("127.0.0.11"),
-        BACKEN_SERVER("127.0.0.12");
+        FRONT_END_SERVER("127.0.0.11"),
+        BACK_END_SERVER("127.0.0.12");
 
         private String ip;
 
