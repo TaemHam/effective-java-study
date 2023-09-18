@@ -7,18 +7,21 @@
 - 대표적인 방법이 정수 열거 패턴 (int enum pattern), 문자열 열거 패턴 (string enum pattern) 기법이 있다.
 
 - int를 직접 상수로 선언해서 사용한다.
-    
-    ```java
-    public static final int APPLE_FUJI = 0;
-    public static final int APPLE_PIPPIN = 1;
-    public static final int APPLE_GRANNY_SMITH = 2;
 
-    public static final int ORANGE_NAVEL = 0;
-    public static final int ORANGE_TEMPLE = 1;
-    public static final int ORANGE_BLOOD = 2;
-    ```
+  ```java
+  public static final int APPLE_FUJI = 0;
+  public static final int APPLE_PIPPIN = 1;
+  public static final int APPLE_GRANNY_SMITH = 2;
+
+  public static final int ORANGE_NAVEL = 0;
+  public static final int ORANGE_TEMPLE = 1;
+  public static final int ORANGE_BLOOD = 2;
+  ```
+
 - 정수 열거 패턴의 단점은?
+
   - 타입 안전을 보장할 수 없다. (일반 int 파라미터와 정수 열거 파라미터의 구분이 안된다.)
+
     ```java
     public static final int APPLE_FUJI = 0;
 
@@ -27,8 +30,9 @@
         ...
     }
     ```
+
   - 정수 열거 패턴을 위한 namespace를 제공하지 않기 때문에 변수명 충돌을 막을 수 없다.
-  
+
   - 문자열 열거 패턴도 있는데 이 패턴은 정수 열거 패턴과 동일하게 클라이언트에서 어떤 문자열을 넣어도 컴파일 시 막아줄 수 없다. (약타입이 되어버림)
 
 <br>
@@ -36,14 +40,15 @@
 ## Java의 열거 타입 (enum type)
 
 - Java의 열거 타입 예시
-    ```java
-    public enum Apple {FUJI, PIPPIN, GRANNY_SMITH}
-    public enum Orange {NAVEL, TEMPLE, BLOOD}
-    ```
 
-- 열거 타입 (enum type)은 클래스이며, enum 안에 선언된 상수 1개 당  자신의 인스턴스를 만들어서 public static final 필드로 공개한다. (enum의 상수들은 싱글턴이다.)
+  ```java
+  public enum Apple {FUJI, PIPPIN, GRANNY_SMITH}
+  public enum Orange {NAVEL, TEMPLE, BLOOD}
+  ```
 
-- 열거 타입은 밖에서 접근할 수 없는 생성자를 제공하지 않으므로 (private 생성자만 제공함) 사실상 final이다.
+- 열거 타입 (enum type)은 클래스이며, enum 안에 선언된 상수 1개 당 자신의 인스턴스를 만들어서 public static final 필드로 공개한다. (enum의 상수들은 싱글턴이다.)
+
+- 열거 타입은 밖에서 접근할 수 있는 생성자를 제공하지 않으므로 (private 생성자만 제공함) 사실상 final이다.
 
 <br>
 
@@ -51,21 +56,23 @@
 
 - 열거 타입은 컴파일 타임에 타입 안정성을 제공한다.
 
-    ```java
-    // apple을 검증하는데 Apple 타입만 받는다.
-    public boolean isApple(Apple apple) {
-        ...
-    }
-    ```
+  ```java
+  // apple을 검증하는데 Apple 타입만 받는다.
+  public boolean isApple(Apple apple) {
+      ...
+  }
+  ```
 
 - 열거 타입은 열거 타입만의 namespace가 존재하기 때문에 상수 간 이름이 같아도 무방하다.
-    ```java
-    // 클래스만 다르면 상수의 이름이 동일해도 상관없다.
-    public enum ShirtSize {SMALL, MEDIUM, LARGE}
-    public enum PantsSize {SMALL, MEDIUM, LARGE}
-    ```
+  ```java
+  // 클래스만 다르면 상수의 이름이 동일해도 상관없다.
+  public enum ShirtSize {SMALL, MEDIUM, LARGE}
+  public enum PantsSize {SMALL, MEDIUM, LARGE}
+  ```
 - 열거 타입은 상수에 연관된 데이터를 상수에 내재시킬 수 있다.
+
   - 아래의 예제는 상수별로 ip 정보를 내재하고 있다.
+
     ```java
     enum Server {
         AUTH_SERVER("127.0.0.10"),
@@ -75,28 +82,30 @@
         private String ip;
 
         Server(String ip) { }
-        
-		public String getIp() {
-			return ip;
-		}
 
-		public static Server findById(String ip) {
-			return Arrays.stream(Server.values())
-				.filter(server -> server.getIp().equals(ip))
-				.findAny()
-				.orElse(null);
-		}
+        public String getIp() {
+            return ip;
+        }
+
+        public static Server findByIp(String ip) {
+            return Arrays.stream(Server.values())
+            .filter(server -> server.getIp().equals(ip))
+            .findAny()
+            .orElse(null);
+        }
     }
     ```
-  
+
 - 열거 타입의 상수를 제거한다면?
+
   - 제거한 상수를 참조하지 않는 클라이언트는 아무 영향이 없다.
-  
+
   - 제거한 상수를 참조하는 클라이언트에서는 컴파일 오류가 발생한다.
 
 <br>
 
 ### 열거 타입을 선언하기
+
 - 널리 쓰이는 열거 타입은 톱레벨 클래스로 만들고, 특정 톱레벨 클래스에서만 쓰인다면 해당 클래스의 멤버 클래스로 만든다.
 
 - 예를 들어 java.math.RoundingMode 열거 타입이 있는데 예전에는 BigDecimal 안에서만 사용하다가 이후 톱레벨 클래스로 전환되었다.
@@ -144,10 +153,10 @@ switch문보다 안전하게 구현하는 방법도 있는데, 바로 **추상 �
 ```JAVA
 public enum Operation {
     PLUS {public double apply(double x, double y) {return x + y;}},
-    MINUS {public double apply(double x, double y) {return x + y;}},
-    TIMES {public double apply(double x, double y) {return x + y;}},
-    DIVIDE {public double apply(double x, double y) {return x + y;}};
-    
+    MINUS {public double apply(double x, double y) {return x - y;}},
+    TIMES {public double apply(double x, double y) {return x * y;}},
+    DIVIDE {public double apply(double x, double y) {return x / y;}};
+
     public abstract double apply(double x, double y);
 }
 ```
@@ -157,23 +166,23 @@ public enum Operation {
 `apply()`가 추상 메서드이므로, 잊어버리고 재정의하지 않았다면 컴파일 오류로 알려준다.<br>
 사실 앞의 상수들에 메서드 구현이 붙어있으니, 잊어버리기도 쉽지 않다.
 
-이렇게 메서드 구현부를 넣는 것도 좋지만, 추가적으로 데이터를 가지게 할 수도 있는데,  다음 예제 코드와 같이 특정 문자열 값으로 열거 타입 객체를 찾는 기능도 넣을 수 있다.
+이렇게 메서드 구현부를 넣는 것도 좋지만, 추가적으로 데이터를 가지게 할 수도 있는데, 다음 예제 코드와 같이 특정 문자열 값으로 열거 타입 객체를 찾는 기능도 넣을 수 있다.
 
 ```JAVA
 public enum Operation {
     PLUS("+") {
         public double apply(double x, double y) {return x + y;}
-    }
+    },
     MINUS("-") {
         public double apply(double x, double y) {return x - y;}
-    }
+    },
     TIMES("*") {
         public double apply(double x, double y) {return x * y;}
-    }
+    },
     DIVIDE("/") {
         public double apply(double x, double y) {return x / y;}
     };
-    
+
     private final String symbol;
 
     Operation(String symbol) {
@@ -183,12 +192,12 @@ public enum Operation {
     public String getSymbol() {
         return symbol;
     }
-    
+
     public abstract double apply(double x, double y);
 
     // symbol을 키로, 각 열거형을 밸류로 맵에 저장
-    private static final Map<String, Operation> stringToEnum = 
-    Stream.of(values()).collect(toMap(Operation::getSymbol, e -> e));
+    private static final Map<String, Operation> stringToEnum =
+        Stream.of(values()).collect(toMap(Operation::getSymbol, e -> e));
 
     // Optional을 반환해 클라이언트에게 null 값이 나올수 있음을 알린다.
     public static Optional<Operation> fromString(String symbol) {
@@ -244,12 +253,12 @@ enum PayrollDay {
 ```JAVA
 enum PayrollDay {
     MONDAY, TUESDAY, WEDSDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
-    
+
     private static final int MINS_PER_SHIFT = 8 * 60;
-    
+
     int pay(int minutesWorked, int payRate) {
         int basePay = minutesWorked * payRate;
-        
+
         int overtimePay;
         switch(this) {
             case SATURDAY: case SUNDAY: // 주말
@@ -259,7 +268,7 @@ enum PayrollDay {
                 overtimePay = minutesWOrked <= MINS_PER_SHIFT ?
                 0 : (minutesWorked - MINS_PER_SHIFT) * payRate / 2;
         }
-            
+
         return basePay + overtimePay;
     }
 }
@@ -273,7 +282,7 @@ enum PayrollDay {
 
 단어가 길어 어려워보이지만, 사실 간단하다.
 
-다른 열거형 타입을 만들고, 분기처리할 코드( == 전략)마다 하나씩 타입을 선언하는 것이다. 
+다른 열거형 타입을 만들고, 분기처리할 코드( == 전략)마다 하나씩 타입을 선언하는 것이다.
 
 이를 위 열거타입에 적용하면 아래와 같은 코드가 된다.
 
@@ -286,7 +295,7 @@ public enum PayrollDay {
     FRIDAY(PayType.WEEKDAY),
     SATURDAY(PayType.WEEKEND),
     SUNDAY(PayType.WEEKEND);
-    
+
     private final PayType payType;
 
     PayrollDay(PayType payType) {
@@ -325,7 +334,6 @@ public enum PayrollDay {
 
 ## 기타 열거 타입에 관한 팁
 
-* 필요한 원소를 컴파일 타임에 알 수 있는 상수 집합이라면 열거 타입을 쓰자
+- 필요한 원소를 컴파일 타임에 알 수 있는 상수 집합이라면 열거 타입을 쓰자
 
-* 상수 추가 때문에 바이너리 호환이 안될까봐 걱정하지 말자
-
+- 상수 추가 때문에 바이너리 호환이 안될까봐 걱정하지 말자
