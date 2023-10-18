@@ -36,12 +36,12 @@
 
 ```java
 public static void main(String[] args) {
-    Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
+  Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
 
-    // 스트림을 iterator로 형변환하여 for문에서 사용한다.
-    for (Integer num : (Iterable<Integer>) stream::iterator) {
-        System.out.println("num = " + num);
-    }
+  // 스트림을 iterator로 형변환하여 for문에서 사용한다.
+  for (Integer num : (Iterable<Integer>) stream::iterator) {
+    System.out.println("num = " + num);
+  }
 }
 ```
 
@@ -50,15 +50,15 @@ public static void main(String[] args) {
 ```java
 // 스트림을 iterable로 변환해주는 어댑터 메서드
 public static <E> Iterable<E> iterableOf(Stream<E> stream) {
-    return stream::iterator;
+  return stream::iterator;
 }
 
 public static void main(String[] args) {
-    Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
+  Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
 
-    for (Integer num : iterableOf(stream)) {
-        System.out.println("num = " + num);
-    }
+  for (Integer num : iterableOf(stream)) {
+    System.out.println("num = " + num);
+  }
 }
 ```
 
@@ -77,7 +77,7 @@ public static void main(String[] args) {
   ```java
   // 스트림을 iterable로 변환해주는 어댑터 메서드
   public static <E> Iterable<E> iterableOf(Stream<E> stream) {
-      return stream::iterator;
+    return stream::iterator;
   }
   ```
 
@@ -92,7 +92,7 @@ public static void main(String[] args) {
   ```java
   // iterable을 스트림으로 변환해주는 어댑터 메서드
   public static <E> Stream<E> streamOf(Iterable<E> iterable) {
-      return StreamSupport.stream(iterable.spliterator(), false);
+    return StreamSupport.stream(iterable.spliterator(), false);
   }
   ```
 
@@ -124,35 +124,41 @@ public static void main(String[] args) {
 
 ```java
 public class PowerSet {
-	public static final <E> Collection<Set<E>> of(Set<E> s) {
-        // 원소를 담은 리스트
-		List<E> src = new ArrayList<>(s);
+  public static final <E> Collection<Set<E>> of(Set<E> s) {
+    // 원소를 담은 리스트
+    List<E> src = new ArrayList<>(s);
 
-        // Collection의 size는 int 타입이므로 2^31 - 1 크기까지의 size를 가질 수 있다.
-		if (src.size() > 30) {
-			throw new IllegalArgumentException("집합에 원소가 너무 많습니다.(최대 30개)".: + s);
+    // Collection의 size는 int 타입이므로 2^31 - 1 크기까지의 size를 가질 수 있다.
+    if (src.size() > 30) {
+      throw new IllegalArgumentException("집합에 원소가 너무 많습니다.(최대 30개)".: + s);
+    }
+
+    return new AbstractList<Set<E>>() {
+
+      @Override
+      public int size() {
+        // 멱집합의 크기는 2를 원래 집합의 원소 수만큼 거듭제곱과 같다.
+        return 1 << src.size();
+      }
+
+      @Override
+      public boolean contains(Object o) {
+        return o instanceof Set && src.containsAll((Set)o);
+      }
+
+      @Override
+      public Set<E> get(int index) {
+        Set<E> result = new HashSet<>();
+
+        for (int i = 0; index != 0; i++, index >>=1) {
+          if ((index & 1) == 1) {
+            result.add(src.get(i));
+          }
         }
-
-		return new AbstractList<Set<E>>() {
-			@Override public int size() {
-				// 멱집합의 크기는 2를 원래 집합의 원소 수만큼 거듭제곱과 같다.
-				return 1 << src.size();
-			}
-
-			@Override public boolean contains(Object o) {
-				return o instanceof Set && src.containsAll((Set)o);
-			}
-
-			@Override public Set<E> get(int index) {
-				Set<E> result = new HashSet<>();
-				for (int i = 0; index != 0; i++, index >>=1)
-					if ((index & 1) == 1) {
-						result.add(src.get(i));
-                    }
-					return result;
-			}
-		};
-	}
+        return result;
+      }
+    };
+  }
 }
 ```
 
