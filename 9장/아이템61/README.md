@@ -75,7 +75,7 @@ public static void main(String[] args) {
   > - 따라서 Integer.valueOf()를 사용해서 테스트하였다.
   > - 책의 예제와 같이 42로 하면 Integer.valueOf(42)와 Integer.valueOf(42)를 비교하면 비교 결과가 0이 나온다.
   > - 그러나 Integer.valueOf(500)과 Integer.valueOf(500)을 비교하면 비교 결과가 1이 나온다.
-  > - 그 이유는 Integer.valueOf 메서드에서 -127 ~ +127 까지의 값은 캐싱 후 캐싱된 결과를 반환하기 때문이다.
+  > - 그 이유는 Integer.valueOf 메서드에서 -128 ~ +127 까지의 값은 캐싱 후 캐싱된 결과를 반환하기 때문이다.
 
 <br>
 
