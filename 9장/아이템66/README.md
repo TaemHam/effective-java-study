@@ -27,7 +27,7 @@
 
 - 그러나 자바의 버전이 올라가면서 OS 같은 플랫폼의 기능들을 점차 흡수하고 있다.
 
-- 또 Java의 Process API를 통해 OS 프로세스를 직접 실행할 수도 있다.
+- 또 자바의 Process API를 통해 OS 프로세스를 직접 실행할 수도 있다.
   - [Java에서 외부 프로세스 실행하기](https://d2.naver.com/helloworld/1113548)
 
 <br>
