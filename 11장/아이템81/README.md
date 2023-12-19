@@ -145,8 +145,8 @@ class SharedQueue {
 public class ProducerConsumerExample {
 
     public static void main(String[] args) {
-        // 2개의 쓰레드가 sharedQueue 객체를 공유하여, 데이터를 생산하고 소비한다.
         // 서로 에러가 나지 않도록 특정 조건에서 다른 쓰레드를 기다린다. (wait, notify 사용)
+        // 2개의 쓰레드가 sharedQueue 객체를 공유하여, 데이터를 생산하고 소비한다.
         SharedQueue sharedQueue = new SharedQueue();
 
         Thread producer = new Thread(() -> {
@@ -193,6 +193,8 @@ public class ProducerConsumerExample {
   1. 실행자 프레임워크
   2. 동시성 컬렉션
   3. 동기화 장치
+
+    <br>
 
   > **📌 동시성 컬렉션**<br>
   >
@@ -339,7 +341,7 @@ public class ProducerConsumerExample {
 
   - 정수 값인 concurrency를 받아 쓰레드 갯수를 지정한다.
 
-  - Runnalble 인터페이스를 활용하여 쓰레드가 작업할 상새 내용을 작성한다.
+  - Runnalble 인터페이스를 활용하여 쓰레드가 작업할 상세 내용을 작성한다.
 
 - time 메서드에서 주의할 점
 
